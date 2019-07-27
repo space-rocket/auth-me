@@ -29,8 +29,10 @@ You'll need to update the dependencies to whatever is latest.
 ...
 defp deps do
   [
+  ...
     {:guardian, "~> 1.2"},
     {:argon2_elixir, "~> 2.0"},
+  ...
   ]
 end
 ...
@@ -95,7 +97,7 @@ $ mix guardian.gen.secret
 Copy the output from the previous command and add it to your configuration.
 
 ```elixir
-## config.exs
+## config/config.exs
 ...
 config :auth_me, AuthMe.UserManager.Guardian,
   issuer: "auth_me",
@@ -146,7 +148,6 @@ Now we need a way to verify the username/password credentials.
 ```elixir
 ## lib/auth_me/user_manager.ex
 ...
-alias AuthMe.UserManager.User
 alias Argon2
 ...
 
