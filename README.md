@@ -340,10 +340,15 @@ Lets make the protected resource implementation.
 defmodule AuthMeWeb.PageController do
   use AuthMeWeb, :controller
 
+  def index(conn, _params) do
+    render(conn, "index.html")
+  end
+
   def protected(conn, _) do
     user = Guardian.Plug.current_resource(conn)
     render(conn, "protected.html", current_user: user)
   end
+
 end
 ```
 
@@ -361,6 +366,9 @@ We use the `Guardian.Plug.current_resource(conn)` function here to fetch the res
 Ok. So the controller and views are not strictly part of Guardian but we need some way to interact with it. From here the only thing left for us to do is to wire up our router.
 
 ```elixir
+## lib/auth_me_web/router.ex
+
+...
 # Our pipeline implements "maybe" authenticated. We'll use the `:ensure_auth` below for when we need to make sure someone is logged in.
 pipeline :auth do
   plug AuthMe.UserManager.Pipeline
@@ -388,6 +396,7 @@ scope "/", AuthMeWeb do
 
   get "/protected", PageController, :protected
 end
+...
 ```
 
 There's a little bit happening here.
